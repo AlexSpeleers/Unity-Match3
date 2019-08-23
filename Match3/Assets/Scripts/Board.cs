@@ -107,6 +107,29 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        StartCoroutine(DecreaseRowCo());
     }
     #endregion
+
+    private IEnumerator DecreaseRowCo()
+    {
+        int nullCount = 0;
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (alldots[i, j] == null)
+                {
+                    nullCount++;
+                }
+                else if (nullCount > 0)
+                { 
+                    alldots[i, j].GetComponent<Dot>().row -= nullCount;
+                    alldots[i, j] = null;
+                }
+            }
+            nullCount = 0;
+        }
+        yield return new WaitForSeconds(0.4f);
+    }
 }

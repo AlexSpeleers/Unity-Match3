@@ -50,24 +50,30 @@ public class Dot : MonoBehaviour
         if (Mathf.Abs(targetX - transform.position.x) > 0.1)//move dot to the target
         {
             tempPos = new Vector2(targetX, transform.position.y);
-            transform.position = Vector2.Lerp(transform.position, tempPos, 0.3f);
+            transform.position = Vector2.Lerp(transform.position, tempPos, 0.6f);
+            if (board.alldots[column, row] != this.gameObject)
+            {
+                board.alldots[column, row] = this.gameObject;
+            }
         }
         else
         {
             tempPos = new Vector2(targetX, transform.position.y);
             transform.position = tempPos;
-            board.alldots[column, row] = this.gameObject;
         }
         if (Mathf.Abs(targetY - transform.position.y) > 0.1)//move dot to the target
         {
             tempPos = new Vector2(transform.position.x, targetY);
-            transform.position = Vector2.Lerp(transform.position, tempPos, 0.3f);
+            transform.position = Vector2.Lerp(transform.position, tempPos, 0.6f);
+            if (board.alldots[column, row] != this.gameObject)
+            {
+                board.alldots[column, row] = this.gameObject;
+            }
         }
         else
         {
             tempPos = new Vector2(transform.position.x, targetY);
             transform.position = tempPos;
-            board.alldots[column, row] = this.gameObject;
         }
     }
 
