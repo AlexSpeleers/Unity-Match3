@@ -203,6 +203,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1285341557
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1285341559}
+  - component: {fileID: 1285341558}
+  m_Layer: 0
+  m_Name: MatchFinder
+  m_TagString: Untagged
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1285341558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285341557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1f1c8c2419ddb646ba675f7ec05187b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curMatches: []
+--- !u!4 &1285341559
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285341557}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.29, y: 1.9578143, z: -5.299723}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1518309182
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,8 +276,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a018a74b8e8d1144bd7f9825ddbb03d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curState: 1
   width: 7
   height: 10
+  offSet: 10
   dots:
   - {fileID: 7042657087828625384, guid: 049ef00fc15470a40958930426012196, type: 3}
   - {fileID: 5327060412493958778, guid: 7c8e86590d2f66d4688c1a5c615e1351, type: 3}
@@ -244,6 +290,8 @@ MonoBehaviour:
   - {fileID: 5865133110264836644, guid: 91dd700a1ee8aac44a48bc573eb93d28, type: 3}
   - {fileID: 5177258197332362636, guid: c1165dffe30cb6d4cac9d95d963f9116, type: 3}
   tilePrefab: {fileID: 7490273600052020798, guid: 8b9ae7cae6bc97b40ae7ef376708cbd9,
+    type: 3}
+  destroyFX: {fileID: 3529534424830777534, guid: 802f340f01137c446b7f3b5434daa82d,
     type: 3}
 --- !u!4 &1518309184
 Transform:

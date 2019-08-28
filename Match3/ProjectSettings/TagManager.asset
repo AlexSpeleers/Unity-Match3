@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Green Dot
+  - Indigo Dot
+  - Magenta Dot
+  - Orange Dot
+  - Red Dot
+  - Sky Dot
+  - Water Dot
+  - Yellow Dot
   layers:
   - Default
   - TransparentFX
