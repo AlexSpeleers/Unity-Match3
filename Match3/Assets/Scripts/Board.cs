@@ -108,8 +108,10 @@ public class Board : MonoBehaviour
             {
                 findMatches.CheckBombs();
             }
-            findMatches.curMatches.Remove(alldots[column, row]);
-            GameObject particle = Instantiate(destroyFX, alldots[column, row].transform.position, Quaternion.identity);
+            GameObject particle = Instantiate(destroyFX,
+                alldots[column, row].transform.position,
+                Quaternion.identity);
+
             Destroy(particle, 0.5f);
             Destroy(alldots[column, row]);
             alldots[column, row] = null;
@@ -128,6 +130,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        findMatches.curMatches.Clear();
         StartCoroutine(DecreaseRowCo());
     }
     #endregion
@@ -201,6 +204,7 @@ public class Board : MonoBehaviour
             DestroyMatches();
         }
         findMatches.curMatches.Clear();
+        curDot = null;
         yield return new WaitForSeconds(0.5f);
         curState = GameState.move;
     }

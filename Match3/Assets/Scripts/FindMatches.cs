@@ -16,6 +16,62 @@ public class FindMatches : MonoBehaviour
     {
         StartCoroutine(FindAllMatchesCo());
     }
+
+    private List<GameObject> IsRowBomb(Dot dot1, Dot dot2, Dot dot3)
+    {
+        List<GameObject> curDots = new List<GameObject>();
+        if (dot1.isRowBomb)
+        {
+            curMatches.Union(GetRowPieces(dot1.row));
+        }
+
+        if (dot2.isRowBomb)
+        {
+            curMatches.Union(GetRowPieces(dot2.row));
+        }
+
+        if (dot3.isRowBomb)
+        {
+            curMatches.Union(GetRowPieces(dot3.row));
+        }
+        return curDots;
+    }
+    private List<GameObject> IsColumnBomb(Dot dot1, Dot dot2, Dot dot3)
+    {
+        List<GameObject> curDots = new List<GameObject>();
+        if (dot1.isColumnBomb)
+        {
+            curMatches.Union(GetColumnPieces(dot1.column));
+        }
+
+        if (dot2.isColumnBomb)
+        {
+            curMatches.Union(GetColumnPieces(dot2.column));
+        }
+
+        if (dot3.isColumnBomb)
+        {
+            curMatches.Union(GetColumnPieces(dot3.column));
+        }
+        return curDots;
+    }
+
+    private void AddToListAndMatch(GameObject dot)
+    {
+        if (!curMatches.Contains(dot))
+        {
+            curMatches.Add(dot);
+        }
+        dot.GetComponent<Dot>().isMatched = true;
+    }
+
+    private void GetNearbyPieces(GameObject dot1, GameObject dot2, GameObject dot3)
+    {
+        AddToListAndMatch(dot1);
+        AddToListAndMatch(dot2);
+        AddToListAndMatch(dot3);
+    }
+
     private IEnumerator FindAllMatchesCo()
     {
         yield return new WaitForSeconds(0.2f);
@@ -26,51 +82,24 @@ public class FindMatches : MonoBehaviour
                 GameObject curDot = board.alldots[i, j];
                 if (curDot != null)
                 {
+                    Dot curDotDot = curDot.GetComponent<Dot>();
                     if (i > 0 && i < board.width - 1)
                     {
                         GameObject leftDot = board.alldots[i - 1, j];
                         GameObject rightDot = board.alldots[i + 1, j];
                         if (leftDot != null && rightDot != null)
                         {
-                            if (leftDot.tag == curDot.tag && rightDot.tag == curDot.tag)
+                            Dot rightDotDot = rightDot.GetComponent<Dot>();
+                            Dot leftDotDot = leftDot.GetComponent<Dot>();
+
+                            if (leftDot != null && rightDot != null)
                             {
-                                if (curDot.GetComponent<Dot>().isRowBomb 
-                                    || leftDot.GetComponent<Dot>().isRowBomb 
-                                    || rightDot.GetComponent<Dot>().isRowBomb)
+                                if (leftDot.tag == curDot.tag && rightDot.tag == curDot.tag)
                                 {
-                                    curMatches.Union(GetRowPieces(j));
+                                    curMatches.Union(IsRowBomb(leftDotDot, curDotDot, rightDotDot));
+                                    curMatches.Union(IsColumnBomb(leftDotDot, curDotDot, rightDotDot));
+                                    GetNearbyPieces(leftDot, curDot, rightDot);
                                 }
-
-                                if (curDot.GetComponent<Dot>().isColumnBomb)
-                                {
-                                    curMatches.Union(GetColumnPieces(i));
-                                }
-
-                                if (leftDot.GetComponent<Dot>().isColumnBomb)
-                                {
-                                    curMatches.Union(GetColumnPieces(i - 1));
-                                }
-
-                                if (rightDot.GetComponent<Dot>().isColumnBomb)
-                                {
-                                    curMatches.Union(GetColumnPieces(i + 1));
-                                }
-
-                                if (!curMatches.Contains(leftDot))
-                                {
-                                    curMatches.Add(leftDot);
-                                }
-                                leftDot.GetComponent<Dot>().isMatched = true;
-                                if (!curMatches.Contains(rightDot))
-                                {
-                                    curMatches.Add(rightDot);
-                                }
-                                rightDot.GetComponent<Dot>().isMatched = true;
-                                if (!curMatches.Contains(curDot))
-                                {
-                                    curMatches.Add(curDot);
-                                }
-                                curDot.GetComponent<Dot>().isMatched = true;
                             }
                         }
                     }
@@ -81,47 +110,38 @@ public class FindMatches : MonoBehaviour
                         GameObject downDot = board.alldots[i, j - 1];
                         if (upDot != null && downDot != null)
                         {
-                            if (upDot.tag == curDot.tag && downDot.tag == curDot.tag)
+                            Dot upDotDot = upDot.GetComponent<Dot>();
+                            Dot downDotDot = downDot.GetComponent<Dot>();
+                            if (upDot != null && downDot != null)
                             {
-                                if (curDot.GetComponent<Dot>().isColumnBomb
-                                    || upDot.GetComponent<Dot>().isColumnBomb
-                                    || downDot.GetComponent<Dot>().isColumnBomb)
+                                if (upDot.tag == curDot.tag && downDot.tag == curDot.tag)
                                 {
-                                    curMatches.Union(GetColumnPieces(i));
+                                    curMatches.Union(IsColumnBomb(upDotDot, curDotDot, downDotDot));
+                                    curMatches.Union(IsRowBomb(upDotDot, curDotDot, downDotDot));
+                                    GetNearbyPieces(upDot, curDot, downDot);
                                 }
-
-                                if (curDot.GetComponent<Dot>().isRowBomb)
-                                {
-                                    curMatches.Union(GetRowPieces(j));
-                                }
-
-                                if (upDot.GetComponent<Dot>().isRowBomb)
-                                {
-                                    curMatches.Union(GetRowPieces(j + 1));
-                                }
-
-                                if (downDot.GetComponent<Dot>().isRowBomb)
-                                {
-                                    curMatches.Union(GetRowPieces(j - 1));
-                                }
-
-                                if (!curMatches.Contains(upDot))
-                                {
-                                    curMatches.Add(upDot);
-                                }
-                                upDot.GetComponent<Dot>().isMatched = true;
-                                if (!curMatches.Contains(downDot))
-                                {
-                                    curMatches.Add(downDot);
-                                }
-                                downDot.GetComponent<Dot>().isMatched = true;
-                                if (!curMatches.Contains(curDot))
-                                {
-                                    curMatches.Add(curDot);
-                                }
-                                curDot.GetComponent<Dot>().isMatched = true;
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    public void MatchPiecesOfColor(string color)
+    {
+        for (int i = 0; i < board.width; i++)
+        {
+            for (int j = 0; i < board.height; j++)
+            {
+                //Check if that piece exists
+                if (board.alldots[i, j] != null)
+                {
+                    //check the tag on thaat dot
+                    if (board.alldots[i, j].tag == color)
+                    {
+                        //set that dot to be matched
+                        board.alldots[i, j].GetComponent<Dot>().isMatched = true;
                     }
                 }
             }
@@ -164,23 +184,34 @@ public class FindMatches : MonoBehaviour
             {
                 //make it unmatched
                 board.curDot.isMatched = false;
-                //decide what kind of bomb to make
-                int typeOfBomb = Random.Range(0, 100);
-                if (typeOfBomb < 50)
+                if ((board.curDot.swipeAngle > -45 && board.curDot.swipeAngle <= 45)
+                    || (board.curDot.swipeAngle < -135 || board.curDot.swipeAngle >= 135))
                 {
-                    //rowbomb
                     board.curDot.MakeRowBomb();
                 }
-                else if (typeOfBomb >= 50)
+                else
                 {
-                    //columnbonb
                     board.curDot.MakeColumnBomb();
                 }
             }
             //is the other piece matched
             else if (board.curDot.otherDot != null)
             {
-
+                Dot otherDot = board.curDot.otherDot.GetComponent<Dot>();
+                //is othedot Matched
+                if (otherDot.isMatched)
+                {
+                    otherDot.isMatched = false;
+                    if ((board.curDot.swipeAngle > -45 && board.curDot.swipeAngle <= 45)
+                        || (board.curDot.swipeAngle < -135 || board.curDot.swipeAngle >= 135))
+                    {
+                        otherDot.MakeRowBomb();
+                    }
+                    else
+                    {
+                        otherDot.MakeColumnBomb();
+                    }
+                }
             }
         }
     }
