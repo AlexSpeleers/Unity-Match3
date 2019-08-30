@@ -293,7 +293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curState: 1
-  width: 8
+  width: 9
   height: 10
   offSet: 10
   dots:
@@ -303,24 +303,56 @@ MonoBehaviour:
   - {fileID: 6068044926896194984, guid: 77c4c03d5bf6998408961d273d69e4dc, type: 3}
   tilePrefab: {fileID: 7490273600052020798, guid: 8b9ae7cae6bc97b40ae7ef376708cbd9,
     type: 3}
+  breakableTilePrefab: {fileID: 192458530919904036, guid: 4effa42b6a27d9149b9c842f7e96547f,
+    type: 3}
   destroyFX: {fileID: 3529534424830777534, guid: 802f340f01137c446b7f3b5434daa82d,
     type: 3}
   boardLayout:
   - x: 0
     y: 0
     tileKind: 1
-  - x: 6
+  - x: 8
     y: 9
     tileKind: 1
   - x: 0
     y: 9
     tileKind: 1
+  - x: 8
+    y: 0
+    tileKind: 1
+  - x: 3
+    y: 2
+    tileKind: 1
   - x: 4
-    y: 4
+    y: 3
     tileKind: 1
   - x: 5
-    y: 4
+    y: 2
     tileKind: 1
+  - x: 5
+    y: 8
+    tileKind: 1
+  - x: 4
+    y: 7
+    tileKind: 1
+  - x: 3
+    y: 8
+    tileKind: 1
+  - x: 3
+    y: 6
+    tileKind: 0
+  - x: 4
+    y: 6
+    tileKind: 0
+  - x: 5
+    y: 6
+    tileKind: 0
+  - x: 2
+    y: 3
+    tileKind: 0
+  - x: 2
+    y: 6
+    tileKind: 0
   curDot: {fileID: 0}
 --- !u!4 &1518309184
 Transform:

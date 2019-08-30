@@ -2,23 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BackGroundTile: MonoBehaviour
+public class BackGroundTile : MonoBehaviour
 {
-    
-    // Start is called before the first frame update
-    void Start()
+    public int hitPoints;
+    private SpriteRenderer sprite;
+    private void Start()
     {
-        Initialize();
+        sprite = GetComponent<SpriteRenderer>();
+    }
+    private void Update()
+    {
+        if (hitPoints <= 0) { Destroy(this.gameObject); }
+    }
+    public void TakeDamage(int damage)
+    {
+        hitPoints -= damage;
+        MakeLighter();
     }
 
-    // Update is called once per frame
-    void Update()
+    void MakeLighter()
     {
-        
-    }
-
-    void Initialize()
-    {
-        
+        Color color = sprite.color;
+        //get the color's alpha and decrease it in half
+        float newAlpha = color.a * 0.5f;
+        sprite.color = new Color(color.r, color.g, color.b, newAlpha);
     }
 }

@@ -27,9 +27,11 @@ public class Board : MonoBehaviour
     public int offSet;
     public GameObject[] dots;
     public GameObject tilePrefab;
+    public GameObject breakableTilePrefab;
     public GameObject destroyFX;
     public TileType[] boardLayout;
     private bool[,] blankSpaces;
+    private BackGroundTile[,] breakableTiles;
     public GameObject[,] alldots;
     public Dot curDot;
 
@@ -39,6 +41,7 @@ public class Board : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        breakableTiles = new BackGroundTile[width, height];
         findMatches = FindObjectOfType<FindMatches>();
         blankSpaces = new bool[width, height];
         alldots = new GameObject[width, height];
@@ -60,9 +63,26 @@ public class Board : MonoBehaviour
             }
         }
     }
+
+    public void GenerateBreakableTiles()
+    {
+        for (int i = 0; i < boardLayout.Length; i++)
+        {
+            //if a tile is a breakable tile
+            if (boardLayout[i].tileKind == TileKind.Breakable)
+            {
+                //creating breakable tile
+                Vector2 tempPos = new Vector2(boardLayout[i].x, boardLayout[i].y);
+                GameObject tile = Instantiate(breakableTilePrefab, tempPos, Quaternion.identity);
+                breakableTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackGroundTile>();
+            }
+        }
+    }
+
     IEnumerator SetUp(float waitTime)//create the game board
     {
         GenerateBlankSpaces();
+        GenerateBreakableTiles();
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
@@ -241,6 +261,17 @@ public class Board : MonoBehaviour
             if (findMatches.curMatches.Count == 4 || findMatches.curMatches.Count == 7)
             {
                 CheckToMakeBombs();
+            }
+
+            //does a tile need to break?
+            if (breakableTiles[column, row] != null)
+            {
+                //if it does - substrackt 1 hp
+                breakableTiles[column, row].TakeDamage(1);
+                if (breakableTiles[column, row].hitPoints <= 0)
+                {
+                    breakableTiles[column, row] = null;
+                }
             }
             GameObject particle = Instantiate(destroyFX,
                 alldots[column, row].transform.position,
