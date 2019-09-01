@@ -9,7 +9,7 @@ public class CameraScalar : MonoBehaviour
     public float cameraOffset;
     public float aspectRatio = 0.625f;
     public float padding = 2;
-
+    public float yOffset = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +21,7 @@ public class CameraScalar : MonoBehaviour
 
     void RepositionCamera(float x, float y)
     {
-        Vector3 tempPos = new Vector3(x / 2, y / 2,cameraOffset);
+        Vector3 tempPos = new Vector3(x / 2, y / 2 + yOffset, cameraOffset);
         transform.position = tempPos;
         if (board.width >= board.height)
         {
@@ -31,11 +31,5 @@ public class CameraScalar : MonoBehaviour
         {
             Camera.main.orthographicSize = (int)board.height / 2 + padding;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
