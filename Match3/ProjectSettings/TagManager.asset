@@ -12,6 +12,7 @@ TagManager:
   - Sky Dot
   - Water Dot
   - Yellow Dot
+  - Color
   layers:
   - Default
   - TransparentFX

@@ -32,14 +32,19 @@ public class Board : MonoBehaviour
     private BackGroundTile[,] breakableTiles;
     public GameObject[,] alldots;
     public Dot curDot;
+    public int basePieceValue=20;
+    private int streakValue = 1;
 
+    private ScoreManager scoreManager;
     public float refillDelay = 0.5f;
     private FindMatches findMatches;
     private IEnumerator coroutine;
+    public int[] scoreGoals;
 
     // Start is called before the first frame update
     void Awake()
     {
+        scoreManager = FindObjectOfType<ScoreManager>();
         breakableTiles = new BackGroundTile[width, height];
         findMatches = FindObjectOfType<FindMatches>();
         blankSpaces = new bool[width, height];
@@ -281,6 +286,7 @@ public class Board : MonoBehaviour
 
             Destroy(particle, 0.5f);
             Destroy(alldots[column, row]);
+            scoreManager.IncreaseScore(basePieceValue * streakValue);
             alldots[column, row] = null;
         }
     }
@@ -327,29 +333,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        yield return new WaitForSeconds(refillDelay * 0.4f);
-        StartCoroutine(FillBoardCo());
-    }
-    private IEnumerator DecreaseRowCo()
-    {
-        int nullCount = 0;
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                if (alldots[i, j] == null)
-                {
-                    nullCount++;
-                }
-                else if (nullCount > 0)
-                { 
-                    alldots[i, j].GetComponent<Dot>().row -= nullCount;
-                    alldots[i, j] = null;
-                }
-            }
-            nullCount = 0;
-        }
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(refillDelay * 0.5f);
         StartCoroutine(FillBoardCo());
     }
 
@@ -363,6 +347,13 @@ public class Board : MonoBehaviour
                 {
                     Vector2 tempPos = new Vector2(i, j + offSet);
                     int dotToUse = Random.Range(0, dots.Length);
+                    int maxIterations = 0;
+                    while (MatchesAt(i, j, dots[dotToUse]) && maxIterations < 100)
+                    {
+                        maxIterations++;
+                        dotToUse = Random.Range(0, dots.Length);
+                    }
+                    maxIterations = 0;
                     GameObject piece = Instantiate(dots[dotToUse], tempPos, Quaternion.identity);
                     alldots[i, j] = piece;
                     piece.GetComponent<Dot>().row = j;
@@ -392,11 +383,12 @@ public class Board : MonoBehaviour
     private IEnumerator FillBoardCo()
     {
         RefillBoard();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(refillDelay);
         while (MatchesOnBoard())
         {
-            yield return new WaitForSeconds(0.5f);
+            streakValue += 1;
             DestroyMatches();
+            yield return new WaitForSeconds(2 * refillDelay);
         }
         findMatches.curMatches.Clear();
         curDot = null;
@@ -407,6 +399,7 @@ public class Board : MonoBehaviour
             ShuffleBoard();
         }
         curState = GameState.move;
+        streakValue += 1;
     }
 
     private void SwitchPieces(int column, int row, Vector2 dir)
