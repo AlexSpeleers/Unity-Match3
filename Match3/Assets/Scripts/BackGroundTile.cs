@@ -6,6 +6,7 @@ public class BackGroundTile : MonoBehaviour
 {
     public int hitPoints;
     private SpriteRenderer sprite;
+    delegate void MyDelegate();
     private void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
@@ -17,7 +18,9 @@ public class BackGroundTile : MonoBehaviour
     public void TakeDamage(int damage)
     {
         hitPoints -= damage;
-        MakeLighter();
+        MyDelegate md = new MyDelegate(MakeLighter);
+        md.Invoke();
+        //MakeLighter();
     }
 
     void MakeLighter()

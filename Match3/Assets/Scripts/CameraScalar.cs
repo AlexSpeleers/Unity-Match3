@@ -8,7 +8,7 @@ public class CameraScalar : MonoBehaviour
     private Board board;
     public float cameraOffset;
     public float aspectRatio = 0.625f;
-    public float padding = 2;
+    public float padding = 3;
     public float yOffset = 1;
     // Start is called before the first frame update
     void Start()
@@ -29,7 +29,7 @@ public class CameraScalar : MonoBehaviour
         }
         else
         {
-            Camera.main.orthographicSize = (int)board.height / 2 + padding;
+            Camera.main.orthographicSize = board.height / 2 + padding;
         }
     }
 }

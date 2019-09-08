@@ -45,22 +45,11 @@ public class Dot : MonoBehaviour
         //previousRow = row;
         //previousColumn = column;
     }
-    // Start is called before the first frame update
     void Start()
     {
         hintManager = FindObjectOfType<HintManager>();
         board = FindObjectOfType<Board>();
         findMatches = FindObjectOfType<FindMatches>();
-    }
-
-    private void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            isAdjacentBomb = true;
-            GameObject marker = Instantiate(adjacentMarker, transform.position, Quaternion.identity);
-            marker.transform.parent = this.transform;
-        }
     }
     void Update()
     {
@@ -215,7 +204,6 @@ public class Dot : MonoBehaviour
             {
                 board.DestroyMatches();
             }
-            //otherDot = null;
         }
     }
     void FindMatches()

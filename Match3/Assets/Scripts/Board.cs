@@ -33,6 +33,7 @@ public class Board : MonoBehaviour
     public GameObject[,] alldots;
     public Dot curDot;
 
+    public float refillDelay = 0.5f;
     private FindMatches findMatches;
     private IEnumerator coroutine;
 
@@ -88,7 +89,8 @@ public class Board : MonoBehaviour
                 if (!blankSpaces[i, j])
                 {
                     Vector2 tempPos = new Vector2(i, j + offSet);//spawn pos
-                    GameObject backGroundTile = Instantiate(tilePrefab, tempPos, Quaternion.identity) as GameObject;//set sells for the dots under one GO in hierarchy
+                    Vector2 tilePosition = new Vector2(i, j);
+                    GameObject backGroundTile = Instantiate(tilePrefab, tilePosition, Quaternion.identity) as GameObject;//set sells for the dots under one GO in hierarchy
                     backGroundTile.transform.parent = this.transform;
                     backGroundTile.name = $"({i} {j})";
                     yield return new WaitForSeconds(waitTime);
@@ -325,7 +327,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(refillDelay * 0.4f);
         StartCoroutine(FillBoardCo());
     }
     private IEnumerator DecreaseRowCo()
