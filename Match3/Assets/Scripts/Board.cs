@@ -35,6 +35,7 @@ public class Board : MonoBehaviour
     public int basePieceValue=20;
     private int streakValue = 1;
 
+    private GoalManager goalManager;
     private ScoreManager scoreManager;
     public float refillDelay = 0.5f;
     private FindMatches findMatches;
@@ -44,6 +45,7 @@ public class Board : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        goalManager = FindObjectOfType<GoalManager>();
         scoreManager = FindObjectOfType<ScoreManager>();
         breakableTiles = new BackGroundTile[width, height];
         findMatches = FindObjectOfType<FindMatches>();
@@ -279,6 +281,12 @@ public class Board : MonoBehaviour
                 {
                     breakableTiles[column, row] = null;
                 }
+            }
+
+            if (goalManager != null)
+            {
+                goalManager.CompareGoal(alldots[column, row].tag.ToString());
+                goalManager.UpdateGoals();
             }
             GameObject particle = Instantiate(destroyFX,
                 alldots[column, row].transform.position,

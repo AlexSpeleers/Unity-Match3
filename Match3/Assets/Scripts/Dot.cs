@@ -13,8 +13,10 @@ public class Dot : MonoBehaviour
     public int targetY;
     public bool isMatched = false;
 
+    private EndGameManager endGameManager;
     private HintManager hintManager;
     private FindMatches findMatches;
+    private SoundManager soundManager;
     private Board board;
     public GameObject otherDot;
     private Vector2 firstTouchPos;
@@ -47,6 +49,8 @@ public class Dot : MonoBehaviour
     }
     void Start()
     {
+        endGameManager = FindObjectOfType<EndGameManager>();
+        soundManager = FindObjectOfType<SoundManager>();
         hintManager = FindObjectOfType<HintManager>();
         board = FindObjectOfType<Board>();
         findMatches = FindObjectOfType<FindMatches>();
@@ -141,6 +145,10 @@ public class Dot : MonoBehaviour
             otherDot.GetComponent<Dot>().row += 1 * (int)direction.y;
             column += (int)direction.x;
             row += (int)direction.y;
+            if (soundManager != null)
+            {
+                soundManager.PlayClip();
+            }
             StartCoroutine(CheckMove());
         }
         else
@@ -202,6 +210,13 @@ public class Dot : MonoBehaviour
             }
             else
             {
+                if (endGameManager != null)
+                {
+                    if (endGameManager.requirements.gameType == GameType.Moves)
+                    {
+                        endGameManager.DecreaseCounterValue();
+                    }
+                }
                 board.DestroyMatches();
             }
         }
